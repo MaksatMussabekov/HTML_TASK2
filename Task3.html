@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<div>
+		<label>Введите сумму:</label>
+		<input type="number" id="amount" placeholder="5000">
+		<label>Валюта:</label>
+		<select id="currency">
+			<option value="KZT">KZT</option>
+			<option value="USD">USD</option>
+			<option value="EUR">EUR</option>
+		</select>
+		<label>Тип:</label>
+		<select id="type">
+			<option value="buy">Покупка</option>
+			<option value="sell">Продажа</option>
+		</select>
+		<button onclick="convert()">Конвертировать</button>
+	</div>
+	<div>
+		<p>KZT (tenge) <span id="kztResult"></span></p>
+		<p>USD (dollar) <span id="usdResult"></span></p>
+		<p>EUR (euro) <span id="eurResult"></span></p>
+	</div>
+
+	<script>
+		function convert() {
+			let buyAndSell = {
+				USD: {buy: 429, sell: 431}, 
+				EUR: {buy: 507, sell: 509} 
+			};
+
+			console.log(buyAndSell.USD.buy)
+			console.log(buyAndSell.USD.sell)
+
+			let amount = document.getElementById('amount').value;
+			let currency = document.getElementById('currency').value;
+			let type = document.getElementById('type').value;
+
+			let usdResult;
+			let eurResult;
+			let kztResult;
+
+			if (currency == "KZT") {
+				if (type == "buy") {
+					usdResult = (amount/buyAndSell.USD.buy).toFixed(2);
+					eurResult = (amount/buyAndSell.EUR.buy).toFixed(2);
+				}else{
+					usdResult = (amount/buyAndSell.USD.sell).toFixed(2);
+					eurResult = (amount/buyAndSell.EUR.sell).toFixed(2);
+				}
+			}else if(currency == "USD"){
+				if (type == "buy") {
+					kztResult = (amount * buyAndSell.USD.buy).toFixed(2);
+					eurResult = ((amount * buyAndSell.USD.buy) / buyAndSell.EUR.buy).toFixed(2);
+				}else{
+					kztResult = (amount * buyAndSell.USD.sell).toFixed(2);
+					eurResult = ((amount * buyAndSell.USD.sell) / buyAndSell.EUR.sell).toFixed(2);
+				}
+			}else if(currency == "EUR"){
+				if (type == "buy") {
+					kztResult = (amount * buyAndSell.EUR.buy).toFixed(2);
+					usdResult = ((amount * buyAndSell.EUR.buy) / buyAndSell.EUR.buy).toFixed(2);
+				}else{
+					kztResult = (amount * buyAndSell.EUR.sell).toFixed(2);
+					usdResult = ((amount * buyAndSell.EUR.sell) / buyAndSell.EUR.sell).toFixed(2);
+				}
+			}
+			console.log(usdResult)
+			console.log(eurResult)
+			console.log(kztResult)
+
+			document.getElementById('usdResult').textContent = usdResult;
+			document.getElementById('kztResult').textContent = kztResult;
+			document.getElementById('eurResult').textContent = eurResult;
+		}
+	</script>
+</body>
+</html>
